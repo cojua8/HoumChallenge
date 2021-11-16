@@ -1,21 +1,23 @@
 import requests
 import json
 
-def get_count():
-    response = requests.get("https://pokeapi.co/api/v2/pokemon/")
+def getter(url):
+    response = requests.get(url)
 
     if response.status_code == 200:
-        return response.json()['count']
+        return response.json()
     else:
         raise Exception(f"Error, status code: {response.status_code}")
+
+def get_count():
+    return getter("https://pokeapi.co/api/v2/pokemon/")["count"]
+
 
 def get_pokemon_names(count):
-    response = requests.get(f"https://pokeapi.co/api/v2/pokemon/?limit={count}")
+    response = getter(f"https://pokeapi.co/api/v2/pokemon/?limit={count}")
 
-    if response.status_code == 200:
-        return [v["name"] for v in response.json()["results"]]
-    else:
-        raise Exception(f"Error, status code: {response.status_code}")
+    return [v["name"] for v in response["results"]]
+
 
 def main():
     # we don't know how many pokemon exist, so we can make multiple calls to

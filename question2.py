@@ -1,21 +1,23 @@
 import requests
 import json
 
-def get_egg_groups(pokemon_name):
-    response = requests.get(f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_name}/")
-
-    if response.status_code == 200:
-        return response.json()["egg_groups"]
-    else:
-        raise Exception(f"Error, status code: {response.status_code}")
-
-def get_mate_names(url):
+def getter(url):
     response = requests.get(url)
 
     if response.status_code == 200:
-        return [v["name"] for v in response.json()["pokemon_species"]]
+        return response.json()
     else:
         raise Exception(f"Error, status code: {response.status_code}")
+
+def get_egg_groups(pokemon_name):
+    response = getter(f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_name}/")
+
+    return response["egg_groups"]
+
+def get_mate_names(url):
+    response = getter(url)
+
+    return [v["name"] for v in response["pokemon_species"]]
 
 def main():
     groups = get_egg_groups("raichu")
