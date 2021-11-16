@@ -1,5 +1,4 @@
 import requests
-import json
 
 def getter(url):
     response = requests.get(url)
